@@ -15,7 +15,7 @@ set "DIST_DIR=%PROJECT_DIR%\dist"
 set "BUILD_DIR=%PROJECT_DIR%\build"
 set "SPEC_FILE=%PROJECT_DIR%\zpl_viewer.spec"
 set "MAIN_SCRIPT=%PROJECT_DIR%\zpl_viewer.py"
-set "ICON_FILE=%PROJECT_DIR%\logo.ico"
+set "ICON_FILE=%PROJECT_DIR%\lib\logo.ico"
 
 echo === Build UI ===
 call "%SCRIPT_DIR%build_ui.bat"
@@ -47,6 +47,7 @@ if exist "%ICON_FILE%" (
 
 REM Adiciona dados adicionais (arquivos que devem ser incluídos no bundle)
 set "CMD=%CMD% --add-data "lib\ui_zpl_viewer.py;lib""
+set "CMD=%CMD% --add-data "lib\logo.py;lib""
 set "CMD=%CMD% --add-data "lib\__init__.py;lib""
 
 set "CMD=%CMD% "%MAIN_SCRIPT%""

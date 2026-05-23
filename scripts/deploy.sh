@@ -16,7 +16,7 @@ DIST_DIR="$PROJECT_DIR/dist"
 BUILD_DIR="$PROJECT_DIR/build"
 SPEC_FILE="$PROJECT_DIR/zpl_viewer.spec"
 MAIN_SCRIPT="$PROJECT_DIR/zpl_viewer.py"
-ICON_FILE="$PROJECT_DIR/logo.ico"
+ICON_FILE="$PROJECT_DIR/lib/logo.ico"
 
 echo "=== Build UI ==="
 "$SCRIPT_DIR/build_ui.sh"
@@ -44,6 +44,7 @@ fi
 
 # Adiciona dados adicionais (arquivos que devem ser incluídos no bundle)
 CMD+=("--add-data" "lib/ui_zpl_viewer.py:lib")
+CMD+=("--add-data" "lib/logo.py:lib")
 CMD+=("--add-data" "lib/__init__.py:lib")
 
 CMD+=("$MAIN_SCRIPT")

@@ -11,12 +11,13 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtPrintSupport import QPrinter, QPrintDialog
-from PySide6.QtGui import QClipboard, QAction
+from PySide6.QtGui import QClipboard, QAction, QIcon
 from functools import partial
 
 from lib.ui_zpl_viewer import Ui_ZplViewer
 
-import os
+# Importa os recursos compilados (ícone, etc.)
+import lib.logo  # noqa: F401 - registra os recursos Qt no sistema de resources
 
 # Regexes do mapping_fields do Pompeia
 MAPPING_FIELDS = {
@@ -97,6 +98,9 @@ class ZplViewer(QWidget):
         # Carrega UI do módulo gerado
         self.ui = Ui_ZplViewer()
         self.ui.setupUi(self)
+
+        # Define o ícone da janela a partir dos recursos compilados
+        self.setWindowIcon(QIcon(":/icons/logo.ico"))
 
         # Widgets da UI (agora são atributos diretos do self.ui)
         self.searchEdit: QLineEdit = self.ui.searchEdit
@@ -439,6 +443,7 @@ class ZplViewer(QWidget):
 
 def main() -> None:
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon(":/icons/logo.ico"))
     viewer = ZplViewer()
     viewer.show()
     sys.exit(app.exec())
