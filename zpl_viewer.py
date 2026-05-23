@@ -9,35 +9,14 @@ from PySide6.QtWidgets import (
     QLabel, QLineEdit, QComboBox, QDialog, QTextEdit, QFileDialog, QCheckBox,
     QSpinBox, QHeaderView, QTableWidget, QTableWidgetItem, QMenu, QAbstractItemView
 )
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, Qt, Signal, Slot
+from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtPrintSupport import QPrinter, QPrintDialog
 from PySide6.QtGui import QClipboard, QAction
 from functools import partial
 
+from lib.ui_zpl_viewer import Ui_ZplViewer
+
 import os
-
-
-def carregar_codigos_zpl(arquivo: str) -> list[str]:
-    """Carrega e extrai códigos ZPL únicos de um arquivo texto."""
-    with open(arquivo, 'r', encoding='utf-8') as f:
-        conteudo = f.read()
-    codigos = []
-    partes = conteudo.split('^XA')
-    for parte in partes:
-        if '^XZ' in parte:
-            zpl = '^XA' + parte.split('^XZ')[0] + '^XZ'
-            zpl = re.sub(r'\s+', ' ', zpl)
-            codigos.append(zpl.strip())
-    # Remove duplicatas preservando ordem
-    vistos = set()
-    codigos_unicos = []
-    for c in codigos:
-        if c not in vistos:
-            vistos.add(c)
-            codigos_unicos.append(c)
-    return codigos_unicos
-
 
 # Regexes do mapping_fields do Pompeia
 MAPPING_FIELDS = {
@@ -50,6 +29,24 @@ MAPPING_FIELDS = {
 # Ordem das colunas do MAPPING para exibição na tabela
 CAMPOS_TABELA = ["OC", "COR", "TAMANHO", "REF"]
 
+def carregar_codigos_zpl(arquivo: str) -> list[str]:
+    """Carrega e extrai códigos ZPL únicos de um arquivo texto."""
+
+    with open(arquivo, 'r', encoding='utf-8') as f:
+        conteudo = f.read()
+    
+    codigos = []
+    partes = conteudo.split('^XA')
+    for parte in partes:
+        if '^XZ' in parte:
+            zpl = '^XA' + parte.split('^XZ')[0] + '^XZ'
+            zpl = re.sub(r'\s+', ' ', zpl)
+            codigos.append(zpl.strip())
+    # Remove duplicatas preservando ordem
+    
+    codigos_unicos = list(set(codigos))
+
+    return codigos_unicos
 
 def extrair_campos_zpl(zpl: str) -> dict[str, str]:
     """Extrai os campos mapeados de um código ZPL."""
@@ -97,28 +94,17 @@ class ZplViewer(QWidget):
     def __init__(self, codigos: Optional[list[str]] = None):
         super().__init__()
 
-        # Carrega UI
-        loader = QUiLoader()
-        ui_file = QFile("zpl_viewer.ui")
-        ui_file.open(QFile.ReadOnly)
-        self.ui = loader.load(ui_file, self)
-        ui_file.close()
+        # Carrega UI do módulo gerado
+        self.ui = Ui_ZplViewer()
+        self.ui.setupUi(self)
 
-        self.setWindowTitle(self.ui.windowTitle())
-        self.resize(self.ui.width(), self.ui.height())
-
-        # Widgets da UI
-        self.searchEdit: QLineEdit = self.ui.findChild(QLineEdit, "searchEdit")
-        self.filterCombo: QComboBox = self.ui.findChild(QComboBox, "filterCombo")
-        self.btnAbrir: QPushButton = self.ui.findChild(QPushButton, "btnAbrir")
-        self.btnImprimir: QPushButton = self.ui.findChild(QPushButton, "btnImprimir")
-        self.tableWidget: QTableWidget = self.ui.findChild(QTableWidget, "tableWidget")
-        self.footerLabel: QLabel = self.ui.findChild(QLabel, "footerLabel")
-
-        # Layout principal
-        main_layout = QVBoxLayout(self)
-        main_layout.addWidget(self.ui)
-        main_layout.setContentsMargins(0, 0, 0, 0)
+        # Widgets da UI (agora são atributos diretos do self.ui)
+        self.searchEdit: QLineEdit = self.ui.searchEdit
+        self.filterCombo: QComboBox = self.ui.filterCombo
+        self.btnAbrir: QPushButton = self.ui.btnAbrir
+        self.btnImprimir: QPushButton = self.ui.btnImprimir
+        self.tableWidget: QTableWidget = self.ui.tableWidget
+        self.footerLabel: QLabel = self.ui.footerLabel
 
         self.setAcceptDrops(True)
         self._dados: list[dict] = []  # Lista completa de itens (sem filtro)
@@ -280,6 +266,9 @@ class ZplViewer(QWidget):
 
             # Armazena o código ZPL como UserRole no primeiro item da linha
             self.tableWidget.item(linha_visivel, self.COL_OC).setData(Qt.ItemDataRole.UserRole, item["codigo"])
+
+            # Redimensionar a coluna REF para caber o conteúdo
+            self.tableWidget.resizeColumnToContents(4)
 
             linha_visivel += 1
 
