@@ -54,15 +54,15 @@ if !errorlevel! equ 0 (
     exit /b !errorlevel!
 )
 
-REM --- Compila recursos (.qrc) ---
-if not exist "%QRC_FILE%" (
-    echo Aviso: Arquivo .qrc nao encontrado em '%QRC_FILE%'. Recursos nao compilados.
-) else (
-    "%RCC%" "%QRC_FILE%" -o "%QRC_OUTPUT%"
-    if !errorlevel! equ 0 (
-        echo OK: Recursos compilados: %QRC_OUTPUT%
-    ) else (
-        echo Erro: Falha ao compilar recursos.
-        exit /b !errorlevel!
-    )
-)
+rem REM --- Compila recursos (.qrc) ---
+rem if not exist "%QRC_FILE%" (
+rem     echo Aviso: Arquivo .qrc nao encontrado em '%QRC_FILE%'. Recursos nao compilados.
+rem ) else (
+rem     "%RCC%" "%QRC_FILE%" -o "%QRC_OUTPUT%"
+rem     if !errorlevel! equ 0 (
+rem         echo OK: Recursos compilados: %QRC_OUTPUT%
+rem     ) else (
+rem         echo Erro: Falha ao compilar recursos.
+rem         exit /b !errorlevel!
+rem     )
+rem )

@@ -63,7 +63,7 @@ class CodigoDialog(QDialog):
 
     def __init__(self, codigo: str, parent: Optional[QWidget] = None):
         super().__init__(parent)
-        self.setWindowTitle('Visualizar Código ZPL')
+        self.setWindowTitle('Seletor de etiquetas - Pompeia')
         self.resize(700, 400)
         layout = QVBoxLayout(self)
         self.textEdit = QTextEdit(self)
@@ -85,11 +85,11 @@ class ZplViewer(QWidget):
     """Widget principal do visualizador de códigos ZPL."""
 
     COL_CHECKBOX = 0
-    COL_OC = 1
-    COL_COR = 2
-    COL_TAMANHO = 3
-    COL_REF = 4
-    COL_QUANTIDADE = 5
+    COL_QUANTIDADE = 1
+    COL_OC = 2
+    COL_COR = 3
+    COL_TAMANHO = 4
+    COL_REF = 5
     NUM_COLUNAS = 6
 
     def __init__(self, codigos: Optional[list[str]] = None):
@@ -100,7 +100,7 @@ class ZplViewer(QWidget):
         self.ui.setupUi(self)
 
         # Define o ícone da janela a partir dos recursos compilados
-        self.setWindowIcon(QIcon(":/icons/logo.ico"))
+        # self.setWindowIcon(QIcon(":/icons/logo.ico"))
 
         # Widgets da UI (agora são atributos diretos do self.ui)
         self.searchEdit: QLineEdit = self.ui.searchEdit
@@ -173,7 +173,7 @@ class ZplViewer(QWidget):
     def _configurar_tabela(self) -> None:
         """Configura colunas, cabeçalhos e comportamento da tabela."""
         self.tableWidget.setColumnCount(self.NUM_COLUNAS)
-        headers = ["", "OC", "COR", "TAMANHO", "REF", "Quantidade"]
+        headers = ["", "Quantidade", "OC", "COR", "TAMANHO", "REF"]
         self.tableWidget.setHorizontalHeaderLabels(headers)
 
         # Configurar largura das colunas

@@ -90,7 +90,7 @@ class Ui_ZplViewer(object):
     # setupUi
 
     def retranslateUi(self, ZplViewer):
-        ZplViewer.setWindowTitle(QCoreApplication.translate("ZplViewer", u"Visualizador de C\u00f3digos ZPL", None))
+        ZplViewer.setWindowTitle(QCoreApplication.translate("ZplViewer", u"Seletor de etiquetas - Pompeia", None))
         self.labelPesquisar.setText(QCoreApplication.translate("ZplViewer", u"Pesquisar:", None))
         self.searchEdit.setPlaceholderText(QCoreApplication.translate("ZplViewer", u"Pesquisar por campo...", None))
         self.labelFiltro.setText(QCoreApplication.translate("ZplViewer", u"Filtro:", None))
