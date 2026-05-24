@@ -113,6 +113,9 @@ class ZplViewer(QWidget):
         self.setAcceptDrops(True)
         self._dados: list[dict] = []  # Lista completa de itens (sem filtro)
 
+        # Centralizar janela
+        self.centralizar()
+
         # Configura tabela
         self._configurar_tabela()
 
@@ -134,6 +137,22 @@ class ZplViewer(QWidget):
 
         if codigos:
             self.set_codigos(codigos)
+
+    def centralizar(self):
+        """Centraliza a janela na tela"""
+        # Obtém a geometria da tela principal
+        screen = QApplication.primaryScreen().geometry()
+        
+        # Obtém a geometria da janela
+        window = self.geometry()
+        
+        # Calcula a posição central
+        x = (screen.width() - window.width()) // 2
+        y = (screen.height() - window.height()) // 2
+        
+        # Move a janela para a posição calculada
+        self.move(x, y)
+
 
     # --- Eventos de drag & drop ---
 

@@ -38,7 +38,7 @@ if exist "%PROJECT_DIR%\.venv\Scripts\pyinstaller.exe" (
 )
 
 REM Monta comando base
-set "CMD=%PYINSTALLER% --onedir --clean --windowed --name zpl_viewer --distpath "%DIST_DIR%" --workpath "%BUILD_DIR%""
+set "CMD=%PYINSTALLER% --onedir --clean --windowed --name pompeia --distpath "%DIST_DIR%" --workpath "%BUILD_DIR%""
 
 REM Adiciona o ícone se existir
 if exist "%ICON_FILE%" (
