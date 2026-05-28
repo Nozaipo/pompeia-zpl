@@ -15,20 +15,11 @@ from PySide6.QtGui import QClipboard, QAction, QIcon
 from functools import partial
 
 from lib.ui_zpl_viewer import Ui_ZplViewer
+from lib.labels import * # noqa: F401 - importa os modelos de etiqueta para registro automático
 
 # Importa os recursos compilados (ícone, etc.)
 import lib.logo  # noqa: F401 - registra os recursos Qt no sistema de resources
 
-# Regexes do mapping_fields do Pompeia
-MAPPING_FIELDS = {
-    "OC": r"\^MD10\^FO35,245\^FB250,1,0,C\^A0N,17,14\^FD ([0-9]+) CORE\^FS",
-    "COR": r"\^FO35,265\^FB250,1,0,C\^A0N,18,15\^FD(\w+)\^FS",
-    "TAMANHO": r" \^FO35,373\^FB250,1,0,C\^A0N,45,37\^FD (\d+)\^FS",
-    "REF": r"\^FO35,285\^FB250,3,0,C\^A0N,13,15\^FD(\d+) - LOVE SECRET\^FS"
-}
-
-# Ordem das colunas do MAPPING para exibição na tabela
-CAMPOS_TABELA = ["OC", "COR", "TAMANHO", "REF"]
 
 def carregar_codigos_zpl(arquivo: str) -> list[str]:
     """Carrega e extrai códigos ZPL únicos de um arquivo texto."""
@@ -41,7 +32,7 @@ def carregar_codigos_zpl(arquivo: str) -> list[str]:
     for parte in partes:
         if '^XZ' in parte:
             zpl = '^XA' + parte.split('^XZ')[0] + '^XZ'
-            zpl = re.sub(r'\s+', ' ', zpl)
+            # zpl = re.sub(r'\s+', ' ', zpl)
             codigos.append(zpl.strip())
     # Remove duplicatas preservando ordem
     
@@ -49,14 +40,13 @@ def carregar_codigos_zpl(arquivo: str) -> list[str]:
 
     return codigos_unicos
 
-def extrair_campos_zpl(zpl: str) -> dict[str, str]:
-    """Extrai os campos mapeados de um código ZPL."""
-    campos = {}
-    for campo, regex in MAPPING_FIELDS.items():
-        m = re.search(regex, zpl)
-        campos[campo] = m.group(1) if m else ""
-    return campos
 
+def identify_label_type(zpl: str) -> Optional[LabelBase]:
+    """Identifica o tipo de etiqueta a partir do código ZPL e retorna uma instância do modelo correspondente."""
+    for cls in LabelMeta.registry:
+        if cls.identify(zpl):
+            return cls(zpl)
+    return None
 
 class CodigoDialog(QDialog):
     """Diálogo para visualizar o código ZPL completo."""
@@ -95,6 +85,9 @@ class ZplViewer(QWidget):
     def __init__(self, codigos: Optional[list[str]] = None):
         super().__init__()
 
+        # Inicializar tipo de etiqueta (será definido ao carregar códigos)
+        self.label_type = None
+
         # Carrega UI do módulo gerado
         self.ui = Ui_ZplViewer()
         self.ui.setupUi(self)
@@ -116,20 +109,11 @@ class ZplViewer(QWidget):
         # Centralizar janela
         self.centralizar()
 
-        # Configura tabela
-        self._configurar_tabela()
-
         # Conecta sinais
         self.searchEdit.textChanged.connect(self._filtrar_lista)
         self.filterCombo.currentIndexChanged.connect(self._filtrar_lista)
         self.btnAbrir.clicked.connect(self._abrir_arquivo)
         self.btnImprimir.clicked.connect(self._enviar_para_impressora)
-
-        # Inicializa filtros
-        self.filterCombo.clear()
-        self.filterCombo.addItem("Todos os campos")
-        for campo in MAPPING_FIELDS.keys():
-            self.filterCombo.addItem(campo)
 
         # Menu de contexto
         self.tableWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
@@ -137,6 +121,7 @@ class ZplViewer(QWidget):
 
         if codigos:
             self.set_codigos(codigos)
+
 
     def centralizar(self):
         """Centraliza a janela na tela"""
@@ -152,7 +137,6 @@ class ZplViewer(QWidget):
         
         # Move a janela para a posição calculada
         self.move(x, y)
-
 
     # --- Eventos de drag & drop ---
 
@@ -173,20 +157,23 @@ class ZplViewer(QWidget):
     def _configurar_tabela(self) -> None:
         """Configura colunas, cabeçalhos e comportamento da tabela."""
         self.tableWidget.setColumnCount(self.NUM_COLUNAS)
-        headers = ["", "OC", "COR", "TAMANHO", "REF", "Quantidade"]
+        headers = [""] + self.label_type.fields_label + ["Quantidade"]
         self.tableWidget.setHorizontalHeaderLabels(headers)
 
         # Configurar largura das colunas
         header = self.tableWidget.horizontalHeader()
-        header.setSectionResizeMode(self.COL_CHECKBOX, QHeaderView.ResizeMode.Fixed)
-        self.tableWidget.setColumnWidth(self.COL_CHECKBOX, 40)
-        header.setSectionResizeMode(self.COL_OC, QHeaderView.ResizeMode.Interactive)
-        header.setSectionResizeMode(self.COL_COR, QHeaderView.ResizeMode.Interactive)
-        header.setSectionResizeMode(self.COL_TAMANHO, QHeaderView.ResizeMode.Interactive)
-        header.setSectionResizeMode(self.COL_REF, QHeaderView.ResizeMode.Interactive)
-        # Quantidade: Fixed mas o StretchLastSection garante que não fique borda cortando
-        header.setSectionResizeMode(self.COL_QUANTIDADE, QHeaderView.ResizeMode.Fixed)
-        self.tableWidget.setColumnWidth(self.COL_QUANTIDADE, 110)
+        # header.setSectionResizeMode(self.COL_CHECKBOX, QHeaderView.ResizeMode.Fixed)
+        # self.tableWidget.setColumnWidth(self.COL_CHECKBOX, 40)
+
+        for column in range(len(self.label_type.fields_sequence)):
+            header.setSectionResizeMode(column, QHeaderView.ResizeMode.Interactive)
+            # header.setSectionResizeMode(self.COL_OC, QHeaderView.ResizeMode.Interactive)
+            # header.setSectionResizeMode(self.COL_COR, QHeaderView.ResizeMode.Interactive)
+            # header.setSectionResizeMode(self.COL_TAMANHO, QHeaderView.ResizeMode.Interactive)
+            # header.setSectionResizeMode(self.COL_REF, QHeaderView.ResizeMode.Interactive)
+            # header.setSectionResizeMode(self.COL_QUANTIDADE, QHeaderView.ResizeMode.Interactive)
+        # header.setSectionResizeMode(self.COL_QUANTIDADE, QHeaderView.ResizeMode.Fixed)
+        # self.tableWidget.setColumnWidth(self.COL_QUANTIDADE, 110)
         # Estica a última seção para ocupar espaço extra e evitar borda cortada
         header.setStretchLastSection(True)
 
@@ -214,8 +201,24 @@ class ZplViewer(QWidget):
         """Define os códigos ZPL a serem exibidos."""
         self._dados = []
         for zpl in codigos:
-            campos = extrair_campos_zpl(zpl)
-            self._dados.append({"codigo": zpl, **campos})
+            self.label_type = identify_label_type(zpl)
+            if self.label_type:
+                campos = self.label_type.fields
+                print("Etiqueta identificada:", self.label_type.get_display_name())
+                self._dados.append({"codigo": zpl, **campos})
+            else:
+                QMessageBox.warning(self, "Aviso", "Etiqueta não suportada.")
+            # campos = extrair_campos_zpl(zpl)
+        
+        # Inicializa filtros
+        self.filterCombo.clear()
+        self.filterCombo.addItem("Todos os campos")
+        for campo in self.label_type.fields_label:
+            self.filterCombo.addItem(campo)
+
+        # Configura tabela
+        self._configurar_tabela()
+
         self._filtrar_lista()
 
     # --- Filtragem e exibição ---
@@ -238,7 +241,7 @@ class ZplViewer(QWidget):
                 if filtro == "Todos os campos":
                     match = any(
                         texto in str(item.get(campo, "")).lower()
-                        for campo in MAPPING_FIELDS.keys()
+                        for campo in self.label_type.fields_label
                     )
                 else:
                     match = texto in str(item.get(filtro, "")).lower()
@@ -276,22 +279,23 @@ class ZplViewer(QWidget):
             # Conecta checkbox para habilitar/desabilitar o spin da mesma linha
             checkbox.toggled.connect(lambda checked, s=spin: s.setEnabled(checked))
 
-            # Insere widgets na tabela
-            self.tableWidget.setCellWidget(linha_visivel, self.COL_CHECKBOX, widget_check)
-            self.tableWidget.setCellWidget(linha_visivel, self.COL_QUANTIDADE, widget_spin)
 
             # Colunas de texto: OC, COR, TAMANHO, REF (centralizadas)
-            for col_idx, campo in enumerate(CAMPOS_TABELA, start=self.COL_OC):
+            for col_idx, campo in enumerate(self.label_type.fields_label, start=1):
                 item_tabela = QTableWidgetItem(item.get(campo, ""))
                 item_tabela.setFlags(item_tabela.flags() & ~Qt.ItemFlag.ItemIsEditable)
                 item_tabela.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
                 self.tableWidget.setItem(linha_visivel, col_idx, item_tabela)
 
             # Armazena o código ZPL como UserRole no primeiro item da linha
-            self.tableWidget.item(linha_visivel, self.COL_OC).setData(Qt.ItemDataRole.UserRole, item["codigo"])
+            # self.tableWidget.item(linha_visivel, self.label_type.fields_sequence["OC"]).setData(Qt.ItemDataRole.UserRole, item["codigo"])
 
             # Redimensionar a coluna REF para caber o conteúdo
-            self.tableWidget.resizeColumnToContents(4)
+            self.tableWidget.resizeColumnToContents(self.label_type.fields_sequence["REF"])
+
+            # Insere widgets na tabela
+            self.tableWidget.setCellWidget(linha_visivel, self.label_type.fields_sequence["CHECKBOX"], widget_check)
+            self.tableWidget.setCellWidget(linha_visivel, self.label_type.fields_sequence["QUANTIDADE"], widget_spin)
 
             linha_visivel += 1
 
@@ -304,16 +308,16 @@ class ZplViewer(QWidget):
         """Retorna lista de (codigo_zpl, quantidade) dos itens com checkbox marcado."""
         selecionados: list[tuple[str, int]] = []
         for row in range(self.tableWidget.rowCount()):
-            checkbox_widget = self.tableWidget.cellWidget(row, self.COL_CHECKBOX)
-            spin_widget = self.tableWidget.cellWidget(row, self.COL_QUANTIDADE)
-            item = self.tableWidget.item(row, self.COL_OC)
+            checkbox_widget = self.tableWidget.cellWidget(row, self.label_type.fields_sequence["CHECKBOX"])
+            spin_widget = self.tableWidget.cellWidget(row, self.label_type.fields_sequence["QUANTIDADE"])
+            item = self.tableWidget.item(row, self.label_type.fields_sequence["OC"])  # Item que contém o código ZPL no UserRole
 
             # O checkbox agora está dentro de um QWidget wrapper
             checkbox = checkbox_widget.findChild(QCheckBox) if checkbox_widget else None
             spin = spin_widget.findChild(QSpinBox) if spin_widget else None
 
             if checkbox and checkbox.isChecked() and item:
-                codigo = item.data(Qt.ItemDataRole.UserRole)
+                codigo = self.label_type.get_print_data()
                 qtd = spin.value() if spin else 1
                 selecionados.append((codigo, qtd))
 
@@ -441,17 +445,10 @@ class ZplViewer(QWidget):
         item = self.tableWidget.itemAt(pos)
         if item is None:
             return
-        row = item.row()
-        codigo_item = self.tableWidget.item(row, self.COL_OC)
-        if codigo_item is None:
-            return
-        codigo = codigo_item.data(Qt.ItemDataRole.UserRole)
-        if not codigo:
-            return
 
         menu = QMenu(self.tableWidget)
         action = QAction("Visualizar código", menu)
-        action.triggered.connect(partial(self._abrir_dialog_codigo, codigo))
+        action.triggered.connect(partial(self._abrir_dialog_codigo, self.label_type.get_print_data()))
         menu.addAction(action)
         menu.exec(self.tableWidget.mapToGlobal(pos))
 

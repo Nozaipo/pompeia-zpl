@@ -1,0 +1,69 @@
+ ^XA                                                                                                                                    
+ ^PQ1                                                                                                                                   
+ ^FO60,50^GFA,1250,1250,25,,:1PFC,3PFE,7QF,::::7QFgN030078,7JFC1KFgN0F00FC,                                                             
+ 7IFE003JFgM07F80FC,7IF8I0JFgM07E00FC,7IFJ07IFgQ078,7FFE07F01IFgQ01,                                                                    
+ 7FFC1FFC1IF,7FF83FFE0IF003CFFI0FF8079F87F83E7FI07F807807F3E7FF87IF0                                                                    
+ 7FF003IF801FFC0IFEFFC3IFC01FFE07C1IFE7FF0JF87FF003IFC07IF07KFE3IFE0                                                                    
+ 3IF07C3IFE7FF0JFC3FF003IFE07IF07KFE3JF07IF87C3IFE7FE1JFC3FF003F87F                                                                     
+ 0FE3F87E3FE7F3FC3F07E1F87C7F1FE7FE1JFC3FF003F03F1F80F87C1FC3F3F01F                                                                     
+ 8FC0FC7CFC07E7FE1JFC3FF003E01F9F007C7C0F81F3F00F8F807C7CFC03E7FE1J                                                                     
+ FE3FF003E00F9F007C7C0F81F3E00F8JFC7CF803E7FE1JFE3FF003C00F9F007C7C                                                                     
+ 0F81F3E00F9JFC7CF803E7FE1JFC3FF003E00F9F007C7C0F81F3E00F9JFC7CF803                                                                     
+ E7FE1JFC3FF003E01F9F007C7C0F81F3F01F8F8I07CF803E7FE1JFC3FF003E01F1                                                                     
+ F80FC7C0F81F3F01F8F8I07CFC07E7FE0JF87FF003F83F0FC1F87C0F81F3F83F8F                                                                     
+ C0E07C7E0FE7FE07IF87FF003IFE0JF87C0F81F3JF07IF07C7IFE7FE07IF0IF003                                                                     
+ IFE07IF07C0F81F3IFE03IF87C3IFE7FE03FFE0IF003IFC03FFE07C0F81F3IFC01                                                                     
+ IF07C1IFE7FE00FF81IF003EFFI0FF807C0F81F3EFF800FFC07C0FFBE7FE001C03                                                                     
+ IF003E3CI03EO03E3EI01FK01E,7FE1J07IF003EV03E,7FE1C001JF003EV03E,                                                                       
+ 7FE1F007JF003EV03E,7FE1NF003EV03E,:7FF3NF003EV03E,7QF003CV01E,7QF,                                                                     
+ ::::7PFE,3PFC,,:^FS                                                                                                                    
+ ^FO100,105^BQ,2,3^FDMA,https://www.lojaspompeia.com/67278?utm_source=qr-code&utm_medium=108003&utm_campaign=etiqueta-produto^FS        
+ ^MD10^FO35,245^FB250,1,0,C^A0N,17,14^FD 067278 CORE^FS                                                                                 
+ ^FO35,265^FB250,1,0,C^A0N,18,15^FDPRETO^FS                                                                                             
+ ^FO35,285^FB250,3,0,C^A0N,13,15^FD10800306727801 - LOVE SECRET^FS                                                                      
+ ^FO20,336^FB250,2,0,C^A0N,16,15^ SOUTIEN^FS                                                                                            
+ ^FO35,299^FB250,3,0,C^A0N,16,15^FD 991028 MICROFIBRA AL^FS                                                                             
+ ^FO35,352^FB250,1,0,C^A0N,18,15^FDTAMANHO^FS                                                                                           
+ ^FO35,373^FB250,1,0,C^A0N,45,37^FD 42^FS                                                                                               
+ ^FO35,415^FB250,1,0,L^A0N,15,12^FDFX M^FS                                                                                              
+ ^FO75,415^FB250,1,0,L^A0N,15,12^FD04/26^FS                                                                                             
+ ^FO110,415^FB250,1,0,L^A0N,15,12^FD^FS                                                                                                 
+ ^FO200,415^FB250,1,0,L^A0N,15,12^FD^FS                                                                                                 
+ ^FO4,415^FB250,1,0,R^A0N,15,12^FD42/46^FS                                                                                              
+ ^FO40,432^BY2,2^B2N,58,Y,N^FD01067278010342^FS                                                                                         
+ ^FO35,580^FB250,1,0,L^A0N,19,16^FDR$^FS                                                                                                
+ ^FO35,580^FB250,1,0,C^A0N,55,65^FD49,90^FS                                                                                             
+ ^FO380,50^GFA,1250,1250,25,,:1PFC,3PFE,7QF,::::7QFgN030078,7JFC1KFgN0F00FC,                                                            
+ 7IFE003JFgM07F80FC,7IF8I0JFgM07E00FC,7IFJ07IFgQ078,7FFE07F01IFgQ01,                                                                    
+ 7FFC1FFC1IF,7FF83FFE0IF003CFFI0FF8079F87F83E7FI07F807807F3E7FF87IF0                                                                    
+ 7FF003IF801FFC0IFEFFC3IFC01FFE07C1IFE7FF0JF87FF003IFC07IF07KFE3IFE0                                                                    
+ 3IF07C3IFE7FF0JFC3FF003IFE07IF07KFE3JF07IF87C3IFE7FE1JFC3FF003F87F                                                                     
+ 0FE3F87E3FE7F3FC3F07E1F87C7F1FE7FE1JFC3FF003F03F1F80F87C1FC3F3F01F                                                                     
+ 8FC0FC7CFC07E7FE1JFC3FF003E01F9F007C7C0F81F3F00F8F807C7CFC03E7FE1J                                                                     
+ FE3FF003E00F9F007C7C0F81F3E00F8JFC7CF803E7FE1JFE3FF003C00F9F007C7C                                                                     
+ 0F81F3E00F9JFC7CF803E7FE1JFC3FF003E00F9F007C7C0F81F3E00F9JFC7CF803                                                                     
+ E7FE1JFC3FF003E01F9F007C7C0F81F3F01F8F8I07CF803E7FE1JFC3FF003E01F1                                                                     
+ F80FC7C0F81F3F01F8F8I07CFC07E7FE0JF87FF003F83F0FC1F87C0F81F3F83F8F                                                                     
+ C0E07C7E0FE7FE07IF87FF003IFE0JF87C0F81F3JF07IF07C7IFE7FE07IF0IF003                                                                     
+ IFE07IF07C0F81F3IFE03IF87C3IFE7FE03FFE0IF003IFC03FFE07C0F81F3IFC01                                                                     
+ IF07C1IFE7FE00FF81IF003EFFI0FF807C0F81F3EFF800FFC07C0FFBE7FE001C03                                                                     
+ IF003E3CI03EO03E3EI01FK01E,7FE1J07IF003EV03E,7FE1C001JF003EV03E,                                                                       
+ 7FE1F007JF003EV03E,7FE1NF003EV03E,:7FF3NF003EV03E,7QF003CV01E,7QF,                                                                     
+ ::::7PFE,3PFC,,:^FS                                                                                                                    
+ ^FO420,105^BQ,2,3^FDMA,https://www.lojaspompeia.com/67278?utm_source=qr-code&utm_medium=108003&utm_campaign=etiqueta-produto^FS        
+ ^MD10^FO355,245^FB250,1,0,C^A0N,17,14^FD 067278 CORE^FS                                                                                
+ ^FO355,265^FB250,1,0,C^A0N,18,15^FDPRETO^FS                                                                                            
+ ^FO355,285^FB250,3,0,C^A0N,13,15^FD10800306727801 - LOVE SECRET^FS                                                                     
+ ^FO355,336^FB250,2,0,C^A0N,16,15^ SOUTIEN^FS                                                                                           
+ ^FO355,299^FB250,3,0,C^A0N,16,15^FD 991028 MICROFIBRA AL^FS                                                                            
+ ^FO355,352^FB250,1,0,C^A0N,18,15^FDTAMANHO^FS                                                                                          
+ ^FO355,373^FB250,1,0,C^A0N,45,37^FD 42^FS                                                                                              
+ ^FO355,415^FB250,1,0,L^A0N,15,12^FDFX M^FS                                                                                             
+ ^FO395,415^FB250,1,0,L^A0N,15,12^FD04/26^FS                                                                                            
+ ^FO430,415^FB250,1,0,L^A0N,15,12^FD^FS                                                                                                 
+ ^FO520,415^FB250,1,0,L^A0N,15,12^FD^FS                                                                                                 
+ ^FO324,415^FB250,1,0,R^A0N,15,12^FD42/46^FS                                                                                            
+ ^FO360,432^BY2,2^B2N,58,Y,N^FD01067278010342^FS                                                                                        
+ ^FO355,580^FB250,1,0,L^A0N,19,16^FDR$^FS                                                                                               
+ ^FO355,580^FB250,1,0,C^A0N,55,65^FD49,90^FS                                                                                            
+ ^XZ                                                                                                                                    
